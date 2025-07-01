@@ -75,7 +75,7 @@ int HTTPClient::POST(const std::string& payload) {
     return _status_code;
 }
 
-const StringStream HTTPClient::getStream() const {
+StringStream HTTPClient::getStream() const {
     return StringStream(_response);
 }
 

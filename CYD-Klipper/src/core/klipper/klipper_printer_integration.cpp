@@ -34,7 +34,7 @@ int KlipperPrinter::get_slicer_time_estimate_s()
         return 0;
     
     JsonDocument doc;
-    deserializeJson(doc, client.getStream());
+    deserializeJson(doc, client.getStream().s());
     return parse_slicer_time_estimate(doc);
 }
 
@@ -184,7 +184,7 @@ bool KlipperPrinter::fetch()
 
         klipper_request_consecutive_fail_count = 0;
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         parse_state(doc);
     }
     else
@@ -225,7 +225,7 @@ PrinterDataMinimal KlipperPrinter::fetch_min()
         data.power_devices = get_power_devices_count();
 
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         parse_state_min(doc, &data);
     }
     else 
@@ -253,7 +253,7 @@ Macros KlipperPrinter::get_macros()
 
     if (http_code == 200){
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         return parse_macros(doc);
     }
 
@@ -269,7 +269,7 @@ int KlipperPrinter::get_macros_count()
 
     if (http_code == 200){
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         return parse_macros_count(doc);
     }
     else {
@@ -292,7 +292,7 @@ PowerDevices KlipperPrinter::get_power_devices()
 
     if (http_code == 200){
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         return parse_power_devices(doc);
     }
 
@@ -308,7 +308,7 @@ int KlipperPrinter::get_power_devices_count()
 
     if (http_code == 200){
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         return parse_power_devices_count(doc);
     }
     else {
@@ -341,7 +341,7 @@ Files KlipperPrinter::get_files()
     if (http_code == 200)
     {
         JsonDocument doc;
-        auto parseResult = deserializeJson(doc, client.getStream());
+        auto parseResult = deserializeJson(doc, client.getStream().s());
         LOG_F(("Json parse: %s\n", parseResult.c_str()))
         parse_file_list(doc, files, KLIPPER_FILE_FETCH_LIMIT);
     }
@@ -425,7 +425,7 @@ Thumbnail KlipperPrinter::get_32_32_png_image_thumbnail(const char* gcode_filena
     if (http_code == 200)
     {
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         img_filename_path = parse_thumbnails(doc);
     }
     else 

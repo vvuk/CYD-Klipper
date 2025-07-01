@@ -182,14 +182,14 @@ bool OctoPrinter::fetch()
         no_printer = false;
         request_consecutive_fail_count = 0;
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         parse_printer_status(doc);
 
         doc.clear();
         configure_http_client(client2, "/api/job", true, 1000, printer_config);
         if (client2.GET() == 200)
         {
-            deserializeJson(doc, client2.getStream());
+            deserializeJson(doc, client2.getStream().s());
             parse_job_state(doc);
         }
         else
@@ -202,7 +202,7 @@ bool OctoPrinter::fetch()
     {
         no_printer = true;
         JsonDocument doc;
-        deserializeJson(doc, client.getStream());
+        deserializeJson(doc, client.getStream().s());
         parse_error(doc);
     }
     else 
@@ -236,7 +236,7 @@ PrinterDataMinimal OctoPrinter::fetch_min()
         if (http_code == 200)
         {
             JsonDocument doc;
-            deserializeJson(doc, client.getStream());
+            deserializeJson(doc, client.getStream().s());
             min.state = parse_printer_state(doc);
         }
         else if (http_code == 409)
@@ -257,7 +257,7 @@ PrinterDataMinimal OctoPrinter::fetch_min()
         if (client.GET() == 200)
         {
             JsonDocument doc;
-            deserializeJson(doc, client.getStream());
+            deserializeJson(doc, client.getStream().s());
             min.print_progress = parse_job_state_progress(doc);
         }
         else 
@@ -359,7 +359,7 @@ Files OctoPrinter::get_files()
     if (http_code == 200)
     {
         JsonDocument doc;
-        auto parseResult = deserializeJson(doc, client.getStream(), DeserializationOption::Filter(filter));
+        auto parseResult = deserializeJson(doc, client.getStream().s(), DeserializationOption::Filter(filter));
         LOG_F(("Json parse: %s\n", parseResult.c_str()))
         parse_file_list(doc, files, OCTO_FILE_FETCH_LIMIT);
     }

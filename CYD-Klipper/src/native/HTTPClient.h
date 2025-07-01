@@ -6,6 +6,8 @@
 #include <map>
 #include <stdint.h>
 
+#include "Arduino.h"
+
 class HTTPClient {
 public:
     // Set HTTP version to 1.0 (true) or 1.1 (false); stream enables forced HTTP/1.0
@@ -31,7 +33,7 @@ public:
     int POST(const std::string& payload);
 
     // Get response stream (raw body)
-    const StringStream getStream() const;
+    StringStream getStream() const;
 
     // Get HTTP status code
     int getStatusCode() const;

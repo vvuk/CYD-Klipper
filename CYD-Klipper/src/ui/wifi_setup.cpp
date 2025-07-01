@@ -1,5 +1,7 @@
 #include "lvgl.h"
 #include "wifi_setup.h"
+
+#ifndef NATIVE_SDL
 #include "../conf/global_config.h"
 #include "ui_utils.h"
 #include "WiFi.h"
@@ -308,3 +310,7 @@ void wifi_ok(){
         unfreeze_request_thread();
     }
 }
+#else
+void wifi_ok() {}
+void wifi_init() {}
+#endif

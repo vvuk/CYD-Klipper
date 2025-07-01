@@ -43,7 +43,8 @@ void loop(){
     }
 }
 #else
-#include <SDL.h>
+#define SDL_MAIN_HANDLED 1
+#include <SDL2/SDL.h>
 #include <stdio.h>
 
 int main(int argc, char **argv) {
