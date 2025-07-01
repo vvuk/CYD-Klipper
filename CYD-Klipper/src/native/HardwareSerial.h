@@ -6,7 +6,7 @@ struct SerialType {
     void print(const char*);
     void println(const char*);
     void printf(const char*, ...);
-    int SerialType::read();
+    int read();
 };
 
 extern SerialType Serial;

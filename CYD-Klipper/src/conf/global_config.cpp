@@ -9,7 +9,7 @@
 #endif
 
 GlobalConfig global_config = {0};
-TemporaryConfig temporary_config = {0};
+TemporaryConfig temporary_config = {.debug = 1, .remote_echo = 0};
 
 ColorDefinition color_defs[] = {
     {LV_PALETTE_BLUE, 0, LV_PALETTE_RED},

@@ -123,9 +123,10 @@ extern ColorDefinition color_defs[];
 #define LOG_LN(x) if(temporary_config.debug){ Serial.println(x);}
 #define LOG_F(x) if(temporary_config.debug){ Serial.printf x ;}   // use with double braces, LOF_F(("x=%d\n",x));
 #else
+#include <stdio.h>
 #define LOG(x) if(temporary_config.debug){ printf("%s", x); }
-#define LOG_LN(x) if(temporary_config.debug){  }
-#define LOG_F(x) if(temporary_config.debug){ } //printf x ;}   // use with double braces, LOF_F(("x=%d\n",x));
+#define LOG_LN(x) if(temporary_config.debug){ printf("%s\n", x); }
+#define LOG_F(x) if(temporary_config.debug){ printf x ;}   // use with double braces, LOF_F(("x=%d\n",x));
 #define BIT(x) (1<<(x))
 #endif
 
