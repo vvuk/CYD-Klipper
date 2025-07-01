@@ -85,8 +85,8 @@ static void brightness_dropdown(lv_event_t * e){
     write_global_config();
 }
 
-const char* wake_timeout_options = "1m\n2m\n5m\n10m\n15m\n30m\n1h\n2h\n4h";
-const char  wake_timeout_options_values[] = { 1, 2, 5, 10, 15, 30, 60, 120, 240 };
+const char* wake_timeout_options = "1m\n2m\n5m\n10m\n15m\n30m\n1h\n2h";
+const char  wake_timeout_options_values[] = { 1, 2, 5, 10, 15, 30, 60, 120 };
 
 static void wake_timeout_dropdown(lv_event_t * e){
     lv_obj_t * dropdown = lv_event_get_target(e);

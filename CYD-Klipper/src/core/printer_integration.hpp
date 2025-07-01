@@ -1,6 +1,10 @@
 #pragma once
 #include "../conf/global_config.h"
+#ifndef NATIVE_SDL
 #include <esp_task_wdt.h>
+#else
+#include <Arduino.h>
+#endif
 
 #define MIN_EXTRUDER_EXTRUDE_TEMP 175
 

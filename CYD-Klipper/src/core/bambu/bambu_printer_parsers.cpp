@@ -2,6 +2,8 @@
 #include <HTTPClient.h>
 #include <list>
 
+#ifndef NATIVE_SDL
+
 #define BIT_X_AXIS_HOMED BIT(0)
 #define BIT_Y_AXIS_HOMED BIT(1)
 #define BIT_Z_AXIS_HOMED BIT(2)
@@ -396,3 +398,8 @@ Files BambuPrinter::parse_files(WiFiClientSecure& wifi_client, int max_files)
     wifi_client.stop();
     return result;
 }
+#else
+void BambuPrinter::parse_state(JsonDocument& in)
+{
+}
+#endif

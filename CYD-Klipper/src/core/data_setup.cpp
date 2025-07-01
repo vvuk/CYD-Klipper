@@ -1,7 +1,9 @@
 
 #include "data_setup.h"
 #include "semaphore.h"
+#ifndef NATIVE_SDL
 #include <esp_task_wdt.h>
+#endif
 #include <UrlEncode.h>
 #include "printer_integration.hpp"
 #include "klipper/klipper_printer_integration.hpp"
@@ -63,7 +65,9 @@ void data_loop()
 }
 
 void data_loop_background(void * param){
+#ifndef NATIVE_SDL
     esp_task_wdt_init(10, true);
+#endif
     int loop_iter = 20;
     while (true){
         delay(data_update_interval);
@@ -77,7 +81,9 @@ void data_loop_background(void * param){
     }
 }
 
+#ifndef NATIVE_SDL
 TaskHandle_t background_loop;
+#endif
 
 void data_setup()
 {
@@ -117,5 +123,9 @@ void data_setup()
     semaphore_init();
     fetch_printer_data();
     freeze_render_thread();
+    #ifndef NATIVE_SDL
     xTaskCreatePinnedToCore(data_loop_background, "data_loop_background", 5000, NULL, 2, &background_loop, 0);
+    #else
+    data_loop_background(NULL);
+    #endif
 }

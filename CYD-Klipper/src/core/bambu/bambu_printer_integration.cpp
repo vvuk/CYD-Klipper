@@ -1,4 +1,6 @@
 #include "bambu_printer_integration.hpp"
+
+#ifndef NATIVE_SDL
 #include <PubSubClient.h>
 
 WiFiClientSecure wifi_client;
@@ -294,7 +296,7 @@ Files BambuPrinter::get_files()
 {
     PrinterState state = printer_data.state;
     disconnect();
-    Files files = parse_files(wifi_client, 20);
+    Files files; // = parse_files(wifi_client, 20);
     connect();
     printer_data.state = state;
     return files;
@@ -369,3 +371,110 @@ BambuConnectionStatus connection_test_bambu(PrinterConfiguration* config)
     LOG_LN("Bambu: Connection test successful!");
     return BambuConnectionStatus::BambuConnectOk;
 }
+#else
+void BambuPrinter::receive_data(unsigned char* data, unsigned int length)
+{
+}
+
+bool BambuPrinter::publish_mqtt_command(const char* command)
+{
+    return false;
+}
+
+bool BambuPrinter::move_printer(const char* axis, float amount, bool relative)
+{
+    return false;
+}
+
+bool BambuPrinter::execute_feature(PrinterFeatures feature)
+{
+    return false;
+}
+
+bool BambuPrinter::connect()
+{
+    return false;
+}
+
+void BambuPrinter::disconnect()
+{
+}
+
+bool BambuPrinter::fetch()
+{
+    return false;
+}
+
+PrinterDataMinimal BambuPrinter::fetch_min()
+{
+    PrinterDataMinimal min = {};
+    min.success = true;
+    min.state = PrinterState::PrinterStateIdle;
+    min.print_progress = 0;
+    min.power_devices = 0;
+    return min;
+}
+
+Macros BambuPrinter::get_macros()
+{
+    Macros macros = {0};
+    macros.success = true;
+    macros.count = 0;
+
+    return macros;
+}
+
+int BambuPrinter::get_macros_count()
+{
+    return 0;
+}
+
+bool BambuPrinter::execute_macro(const char* macro)
+{
+    return false;
+}
+
+PowerDevices BambuPrinter::get_power_devices()
+{
+    PowerDevices power_devices = {0};
+    power_devices.success = true;
+    return power_devices;
+}
+
+int BambuPrinter::get_power_devices_count()
+{
+    return 0;
+}
+
+bool BambuPrinter::set_power_device_state(const char* device_name, bool state)
+{
+    return false;
+}
+
+Files BambuPrinter::get_files()
+{
+    Files files;
+    return files;
+}
+
+Thumbnail BambuPrinter::get_32_32_png_image_thumbnail(const char* gcode_filename)
+{
+    Thumbnail thumbnail = {0};
+    return thumbnail;
+}
+
+bool BambuPrinter::set_target_temperature(PrinterTemperatureDevice device, unsigned int temperature)
+{
+    return false;
+}
+
+bool BambuPrinter::send_gcode(const char* gcode, bool wait)
+{
+    return false;
+}
+
+BambuConnectionStatus connection_test_bambu(PrinterConfiguration* config)
+{
+    return BambuConnectionStatus::BambuConnectFail;
+}
+#endif

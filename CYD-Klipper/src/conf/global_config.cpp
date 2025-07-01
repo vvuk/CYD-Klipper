@@ -1,6 +1,12 @@
-#include <Preferences.h>
 #include "global_config.h"
 #include "lvgl.h"
+#ifndef NATIVE_SDL
+#include <Preferences.h>
+#define RESTART() ESP.restart()
+#else
+#include <stdlib.h>
+#define RESTART() exit(0)
+#endif
 
 GlobalConfig global_config = {0};
 TemporaryConfig temporary_config = {0};
@@ -16,6 +22,7 @@ ColorDefinition color_defs[] = {
     {LV_PALETTE_PURPLE, 0, LV_PALETTE_CYAN},
 };
 
+#ifndef NATIVE_SDL
 void write_global_config()
 {
     Preferences preferences;
@@ -40,6 +47,10 @@ void verify_version()
 
     preferences.end();
 }
+#else
+void write_global_config() {}
+void verify_version() {}
+#endif
 
 PrinterConfiguration* get_current_printer_config()
 {
@@ -103,7 +114,7 @@ void global_config_add_new_printer()
     }
 
     global_config_set_printer(free_index);
-    ESP.restart();
+    RESTART();
 }
 
 void global_config_set_printer(int idx)
@@ -125,7 +136,7 @@ void global_config_delete_printer(int idx)
     PrinterConfiguration* config = &global_config.printer_config[idx];
     config->setup_complete = false;
     write_global_config();
-    ESP.restart();
+    RESTART();
 }
 
 void set_printer_config_index(int index)
@@ -163,7 +174,7 @@ void set_printer_config_index(int index)
         }
 
         write_global_config();
-        ESP.restart();
+        RESTART();
     }    
 
     write_global_config();
@@ -191,10 +202,12 @@ void load_global_config()
     global_config.printer_config[0].printer_move_z_steps[2] = 100;
 
     verify_version();
+    #ifndef NATIVE_SDL
     Preferences preferences;
     preferences.begin("global_config", true);
     preferences.getBytes("global_config", &global_config, sizeof(global_config));
     preferences.end();
+    #endif
 
     #if defined REPO_DEVELOPMENT  &&  REPO_DEVELOPMENT == 1
         temporary_config.debug = true;

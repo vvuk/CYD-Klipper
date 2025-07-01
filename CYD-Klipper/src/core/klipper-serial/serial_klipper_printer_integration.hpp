@@ -3,12 +3,14 @@
 class SerialKlipperPrinter : public KlipperPrinter
 {
     protected:
+#ifndef NATIVE_SDL
         bool send_emergency_stop();
         int get_slicer_time_estimate_s();
+#endif
     public:
         SerialKlipperPrinter(int index) : KlipperPrinter(index)
         {}
-
+#ifndef NATIVE_SDL
         bool connect();
         bool fetch();
         PrinterDataMinimal fetch_min();
@@ -21,6 +23,7 @@ class SerialKlipperPrinter : public KlipperPrinter
         bool start_file(const char* filename);
         Thumbnail get_32_32_png_image_thumbnail(const char* gcode_filename);
         bool send_gcode(const char* gcode, bool wait = true);
+#endif
 };
 
 KlipperConnectionStatus connection_test_serial_klipper(PrinterConfiguration* config);

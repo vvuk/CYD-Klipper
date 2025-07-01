@@ -1,29 +1,49 @@
 #pragma once
 
-#ifdef CYD_SCREEN_VERTICAL
+#ifdef NATIVE_SDL
+    // Allow build flags to override screen size for native SDL builds
     #ifndef CYD_SCREEN_WIDTH_PX
-        #define CYD_SCREEN_WIDTH_PX LCD_WIDTH
+        #ifdef SCREEN_WIDTH
+            #define CYD_SCREEN_WIDTH_PX SCREEN_WIDTH
+        #else
+            #define CYD_SCREEN_WIDTH_PX 800
+        #endif
     #endif
-
     #ifndef CYD_SCREEN_HEIGHT_PX
-        #define CYD_SCREEN_HEIGHT_PX LCD_HEIGHT
+        #ifdef SCREEN_HEIGHT
+            #define CYD_SCREEN_HEIGHT_PX SCREEN_HEIGHT
+        #else
+            #define CYD_SCREEN_HEIGHT_PX 480
+        #endif
     #endif
-
-    #define CYD_SCREEN_PANEL_HEIGHT_PX \
-        (CYD_SCREEN_HEIGHT_PX - CYD_SCREEN_SIDEBAR_SIZE_PX)
-    #define CYD_SCREEN_PANEL_WIDTH_PX CYD_SCREEN_WIDTH_PX
-#else 
-    #ifndef CYD_SCREEN_WIDTH_PX
-        #define CYD_SCREEN_WIDTH_PX LCD_HEIGHT
-    #endif
-
-    #ifndef CYD_SCREEN_HEIGHT_PX
-        #define CYD_SCREEN_HEIGHT_PX LCD_WIDTH
-    #endif
-
     #define CYD_SCREEN_PANEL_HEIGHT_PX CYD_SCREEN_HEIGHT_PX
-    #define CYD_SCREEN_PANEL_WIDTH_PX \
-        (CYD_SCREEN_WIDTH_PX - CYD_SCREEN_SIDEBAR_SIZE_PX)
+    #define CYD_SCREEN_PANEL_WIDTH_PX CYD_SCREEN_WIDTH_PX
+#else
+    #ifdef CYD_SCREEN_VERTICAL
+        #ifndef CYD_SCREEN_WIDTH_PX
+            #define CYD_SCREEN_WIDTH_PX LCD_WIDTH
+        #endif
+
+        #ifndef CYD_SCREEN_HEIGHT_PX
+            #define CYD_SCREEN_HEIGHT_PX LCD_HEIGHT
+        #endif
+
+        #define CYD_SCREEN_PANEL_HEIGHT_PX \
+            (CYD_SCREEN_HEIGHT_PX - CYD_SCREEN_SIDEBAR_SIZE_PX)
+        #define CYD_SCREEN_PANEL_WIDTH_PX CYD_SCREEN_WIDTH_PX
+    #else 
+        #ifndef CYD_SCREEN_WIDTH_PX
+            #define CYD_SCREEN_WIDTH_PX LCD_HEIGHT
+        #endif
+
+        #ifndef CYD_SCREEN_HEIGHT_PX
+            #define CYD_SCREEN_HEIGHT_PX LCD_WIDTH
+        #endif
+
+        #define CYD_SCREEN_PANEL_HEIGHT_PX CYD_SCREEN_HEIGHT_PX
+        #define CYD_SCREEN_PANEL_WIDTH_PX \
+            (CYD_SCREEN_WIDTH_PX - CYD_SCREEN_SIDEBAR_SIZE_PX)
+    #endif
 #endif
 
 typedef struct {

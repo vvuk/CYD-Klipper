@@ -1,8 +1,9 @@
 #include "serial_klipper_printer_integration.hpp"
+
+#ifndef NATIVE_SDL
 #include <HardwareSerial.h>
 #include <UrlEncode.h>
 #include "../../ui/serial/serial_console.h"
-
 void clear_serial_buffer(bool can_rely_on_newline_terminator = true)
 {
     if (can_rely_on_newline_terminator)
@@ -397,3 +398,9 @@ KlipperConnectionStatus connection_test_serial_klipper(PrinterConfiguration* con
 
     return KlipperConnectionStatus::ConnectFail;
 }
+#else
+KlipperConnectionStatus connection_test_serial_klipper(PrinterConfiguration* config)
+{
+    return KlipperConnectionStatus::ConnectFail;
+}
+#endif

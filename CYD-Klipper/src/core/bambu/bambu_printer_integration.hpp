@@ -22,7 +22,7 @@ class BambuPrinter : public BasePrinter
     protected:
         void parse_state(JsonDocument& in);
         void init_ui_panels();
-        Files parse_files(WiFiClientSecure& client, int max_files);
+        //Files parse_files(WiFiClientSecure& client, int max_files);
 
     public:
         float aux_fan_speed;
