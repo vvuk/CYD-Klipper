@@ -52,7 +52,7 @@ bool get_range(lv_event_t * e, int min, int max, int* out)
 
 static void set_fan_speed(lv_event_t * e)
 {
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     int actual_fan_speed = fan_percent_to_byte(speed);
     char buff[16];
     sprintf(buff, "M106 S%d", actual_fan_speed);

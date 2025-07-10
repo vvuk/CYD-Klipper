@@ -3,6 +3,8 @@
 #include "semaphore.h"
 #ifndef NATIVE_SDL
 #include <esp_task_wdt.h>
+#else
+#include <thread>
 #endif
 #include <UrlEncode.h>
 #include "printer_integration.hpp"
@@ -64,6 +66,19 @@ void data_loop()
     freeze_render_thread();
 }
 
+int data_loop_once_iter = 20;
+void data_loop_once()
+{
+    fetch_printer_data();
+    if (global_config.multi_printer_mode) {
+        if (data_loop_once_iter++ > 20){
+          fetch_printer_data_minimal();
+          data_loop_once_iter = 0;
+        }
+    }
+}
+
+
 void data_loop_background(void * param){
 #ifndef NATIVE_SDL
     esp_task_wdt_init(10, true);
@@ -85,6 +100,7 @@ void data_loop_background(void * param){
 TaskHandle_t background_loop;
 #endif
 
+
 void data_setup()
 {
     BasePrinter** available_printers = (BasePrinter**)malloc(sizeof(BasePrinter*) * PRINTER_CONFIG_COUNT);
@@ -94,6 +110,7 @@ void data_setup()
     {
         if (global_config.printer_config[i].setup_complete)
         {
+      printf("P %d\n", i);
             if (global_config.printer_index == i)
             {
                 true_current_printer_index = count;;
@@ -102,6 +119,7 @@ void data_setup()
             switch (global_config.printer_config[i].printer_type)
             {
                 case PrinterType::PrinterTypeKlipper:
+      printf("klipper\n");
                     available_printers[count++] = new KlipperPrinter(i);
                     break;
                 case PrinterType::PrinterTypeBambuLocal:
@@ -125,7 +143,5 @@ void data_setup()
     freeze_render_thread();
     #ifndef NATIVE_SDL
     xTaskCreatePinnedToCore(data_loop_background, "data_loop_background", 5000, NULL, 2, &background_loop, 0);
-    #else
-    data_loop_background(NULL);
     #endif
 }

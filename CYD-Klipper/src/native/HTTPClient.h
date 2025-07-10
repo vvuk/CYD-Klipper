@@ -44,6 +44,8 @@ public:
 
 private:
     std::string _url;
+    std::string _base_url;
+    std::string _path;
     std::map<std::string, std::string> _headers;
     uint32_t _timeout_ms;
     uint32_t _connection_timeout_ms;

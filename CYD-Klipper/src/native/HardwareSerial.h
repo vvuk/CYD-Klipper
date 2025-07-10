@@ -2,6 +2,7 @@
 #define HARDWARESERIAL_H_
 
 struct SerialType {
+    SerialType();
     void print(char);
     void print(const char*);
     void println(const char*);

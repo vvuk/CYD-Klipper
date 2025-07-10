@@ -280,10 +280,12 @@ void lv_setup()
 
     lv_indev_t * display_driver = lv_indev_get_next(NULL);
 
+#ifndef NATIVE_SDL
     if (original_touch_driver == NULL) 
     {
         original_touch_driver = display_driver->driver->read_cb;
     }
+#endif
 
     set_color_scheme();
 
@@ -291,8 +293,10 @@ void lv_setup()
     lv_do_calibration();
 #endif // CYD_SCREEN_DISABLE_TOUCH_CALIBRATION
 
+#ifndef NATIVE_SDL
     display_driver->driver->read_cb = lv_touch_intercept;
-    
+#endif
+
     screen_timer_setup();
     screen_timer_start();
     lv_png_init();
@@ -300,5 +304,9 @@ void lv_setup()
 
 bool is_screen_asleep()
 {
+#ifndef NATIVE_SDL
     return is_screen_in_sleep;
+#else
+    return false;
+#endif
 }

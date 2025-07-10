@@ -33,7 +33,7 @@ static void set_fan_speed_text(lv_event_t * e) {
 }
 
 static void set_fan_speed(lv_event_t * e){
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     int actual_speed = fan_percent_to_byte(speed);
     char gcode[16];
     sprintf(gcode, "M106 S%d", actual_speed);
@@ -96,14 +96,14 @@ static void set_speed_mult_text(lv_event_t * e){
 }
 
 static void set_speed_mult(lv_event_t * e){
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     char gcode[16];
     sprintf(gcode, "M220 S%d", speed);
     send_gcode_blocking(gcode);
 }
 
 static void set_speed_mult_offset(lv_event_t * e){
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     float result = get_current_printer_data()->speed_mult * 100 + speed;
     get_current_printer_data()->speed_mult = result / 100;
     char gcode[16];
@@ -132,14 +132,14 @@ static void set_extrude_mult_text(lv_event_t * e){
 }
 
 static void set_extrude_mult(lv_event_t * e){
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     char gcode[16];
     sprintf(gcode, "M221 S%d", speed);
     send_gcode_blocking(gcode);
 }
 
 static void set_extrude_mult_offset(lv_event_t * e){
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     float result = get_current_printer_data()->extrude_mult * 100 + speed;
     get_current_printer_data()->extrude_mult = result / 100;
     char gcode[16];

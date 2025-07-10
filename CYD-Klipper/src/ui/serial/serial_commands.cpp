@@ -282,10 +282,12 @@ void ssid(String argv[])
 
 void ip(String argv[])
 {
-    strncpy(get_current_printer_config()->printer_host, argv[1].c_str(), sizeof(global_config.printer_config[0].printer_host)-1);
-    get_current_printer_config()->klipper_port =  argv[2].toInt();
-    get_current_printer_config()->ip_configured = true;
-    get_current_printer_config()->setup_complete = true;
+    PrinterConfiguration* p = get_current_printer_config();
+    strncpy(p->printer_host, argv[1].c_str(), sizeof(global_config.printer_config[0].printer_host)-1);
+    p->printer_type = PrinterTypeKlipper;
+    p->klipper_port =  argv[2].toInt();
+    p->ip_configured = true;
+    p->setup_complete = true;
     write_global_config();
 }
 

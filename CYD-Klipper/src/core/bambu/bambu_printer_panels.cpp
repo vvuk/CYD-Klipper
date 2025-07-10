@@ -46,7 +46,7 @@ static void set_fan_speed_text(lv_event_t* e, FanIndex index)
 
 static void set_fan_speed(lv_event_t* e, FanIndex index)
 {
-    int speed = (int)lv_event_get_user_data(e);
+    int speed = (intptr_t)lv_event_get_user_data(e);
     int actual_speed = fan_percent_to_byte(speed);
     BambuPrinter* printer = (BambuPrinter*)get_current_printer(); // TODO: pass by ref 
     char buff[20];
@@ -100,7 +100,7 @@ static void set_speed_mult_text(lv_event_t * e){
 
 static void set_speed_mult(lv_event_t * e)
 {
-    BambuSpeedProfile speed = (BambuSpeedProfile)((int)lv_event_get_user_data(e));
+    BambuSpeedProfile speed = (BambuSpeedProfile)((intptr_t)lv_event_get_user_data(e));
     BambuPrinter* printer = (BambuPrinter*)get_current_printer(); // TODO: pass by ref 
     char buff[128];
 

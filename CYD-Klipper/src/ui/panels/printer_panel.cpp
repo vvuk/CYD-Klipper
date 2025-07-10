@@ -20,7 +20,7 @@ const static lv_point_t line_points[] = { {0, 0}, {(short int)((CYD_SCREEN_PANEL
 static void update_printer_name_text(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     BasePrinter* printer = get_printer(config_index);
     lv_label_set_text(label, printer->printer_config->printer_name[0] == 0 ? printer->printer_config->printer_host : printer->printer_config->printer_name);
 }
@@ -28,7 +28,7 @@ static void update_printer_name_text(lv_event_t * e)
 static void update_printer_status_text(lv_event_t * e) 
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if (config_index == get_current_printer_index())
@@ -43,7 +43,7 @@ static void update_printer_status_text(lv_event_t * e)
 static void update_printer_label_visible_active_printer(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
 
     if (config_index == get_current_printer_index())
     {
@@ -58,7 +58,7 @@ static void update_printer_label_visible_active_printer(lv_event_t * e)
 static void update_printer_percentage_bar(lv_event_t * e)
 {
     lv_obj_t * percentage = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if (printer->state == PrinterState::PrinterStatePrinting || printer->state == PrinterState::PrinterStatePaused)
@@ -74,7 +74,7 @@ static void update_printer_percentage_bar(lv_event_t * e)
 static void update_printer_percentage_text(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if (printer->state == PrinterState::PrinterStatePrinting || printer->state == PrinterState::PrinterStatePaused)
@@ -92,7 +92,7 @@ static void update_printer_percentage_text(lv_event_t * e)
 static void update_printer_control_button_text(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if (printer->power_devices > 0 && (config_index == get_current_printer_index() || printer->state == PrinterState::PrinterStateOffline))
@@ -108,7 +108,7 @@ static void update_printer_control_button_text(lv_event_t * e)
 static void btn_set_secondary_button_text(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if (config_index == get_current_printer_index())
@@ -124,7 +124,7 @@ static void btn_set_secondary_button_text(lv_event_t * e)
 static void btn_enable_control(lv_event_t * e)
 {
     lv_obj_t * btn = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
 
     if ((config_index == get_current_printer_index() || printer->state == PrinterState::PrinterStateOffline) && printer->power_devices <= 0)
@@ -155,7 +155,7 @@ static void keyboard_callback(lv_event_t * e){
 static void btn_printer_secondary(lv_event_t * e)
 {
     lv_obj_t * btn = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     BasePrinter* printer = get_printer(config_index);
     
     if (config_index == get_current_printer_index())
@@ -169,7 +169,7 @@ static void btn_printer_secondary(lv_event_t * e)
 
 static void btn_printer_rename(lv_event_t * e)
 {
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     BasePrinter* printer = get_printer(config_index);
     keyboard_config = printer->printer_config;
     lv_create_keyboard_text_entry(keyboard_callback, "Rename Printer", LV_KEYBOARD_MODE_TEXT_LOWER, CYD_SCREEN_WIDTH_PX * 0.75, 24, keyboard_config->printer_name, false);
@@ -178,7 +178,7 @@ static void btn_printer_rename(lv_event_t * e)
 static void btn_printer_activate(lv_event_t * e)
 {
     lv_obj_t * label = lv_event_get_target(e);
-    int config_index = (int)lv_event_get_user_data(e);
+    int config_index = (intptr_t)lv_event_get_user_data(e);
     PrinterDataMinimal* printer = get_printer_data_minimal(config_index);
     BasePrinter* printer_full = get_printer(config_index);
 

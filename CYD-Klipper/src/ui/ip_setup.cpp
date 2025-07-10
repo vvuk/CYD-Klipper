@@ -14,6 +14,8 @@
 #include "../core/klipper-serial/serial_klipper_printer_integration.hpp"
 #include "../core/octoprint/octoprint_printer_integration.hpp"
 
+#include <SDL2/SDL.h>
+
 void show_ip_entry();
 void choose_printer_type();
 
@@ -493,6 +495,7 @@ void ip_init(){
         }
     }
     
+    SDL_Event event;
     while (!global_config.printer_config[global_config.printer_index].setup_complete)
     {
         if (global_config.printer_config[global_config.printer_index].printer_type == PrinterType::PrinterTypeKlipperSerial)

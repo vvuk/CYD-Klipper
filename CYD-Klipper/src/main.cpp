@@ -2,10 +2,10 @@
 #include "core/screen_driver.h"
 #ifndef NATIVE_SDL
 #include "ui/wifi_setup.h"
-#include "ui/ip_setup.h"
 #include <Esp.h>
 #include "ui/ota_setup.h"
 #endif
+#include "ui/ip_setup.h"
 #include "ui/serial/serial_console.h"
 #include "lvgl.h"
 #include "core/data_setup.h"
@@ -51,16 +51,23 @@ int main(int argc, char **argv) {
     // Native SDL entry point for desktop
     serial_console::greet();
     load_global_config();
+
+    global_config.wifi_configured = true;
+
     screen_setup();
     lv_setup();
     LOG_LN("Screen init done");
+
+    ip_init();
     data_setup();
+
     nav_style_setup();
     main_ui_setup();
 
     while (1) {
         lv_handler();
-        SDL_Delay(5); // Let the OS breathe
+        serial_console::run();
+        data_loop_once();
     }
     return 0;
 }
